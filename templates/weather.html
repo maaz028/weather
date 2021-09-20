@@ -1,0 +1,81 @@
+{% extends 'style.html' %}
+{% block city  %}{{city}}{% endblock %}
+{% load static %}
+{% block body %}
+
+<nav class="navbar">
+<h2><img class='navimg' src="{% static 'weatherApp/cloud.png' %}" alt="">    Weather Forcast Application</h2>
+</nav>
+  <div class="container container1">
+  <div>
+   <img class='img' src="{% static 'weatherApp/weather.png' %}" alt=""> 
+ 
+    <form action="/check" method='POST'> {% csrf_token %}
+    <div class="container container1">
+    
+        <div class="mb-3">
+        <input  type="text" name='city' id='city' class="form-control input" id="exampleFormControlInput1" placeholder="Enter City name">
+        <button type="submit" class="my-3 btn btn-success">Search</button>
+        <button type="reset" class="my-3 btn btn-danger">Clear text</button>
+        </div>
+     
+    </div>
+   </form>
+  </div>
+  </div>
+   {% if city|length > 0 %}
+   <div class="data">
+    <div class="container">
+        
+    <h1>TODAY {{city}} WEATHER</h1>
+    </div>
+    <div class=" box ">
+        <h4><span class="badge bg-primary">CITY</span> <span class="badge bg-secondary">{{city}}</span> </h4>
+        <h4><span class="badge bg-primary">COUNTRY</span> <span class="badge bg-secondary">{{country}}</span></h4>
+        <h4><span class="badge bg-primary">FORCAST</span> <span class="badge bg-secondary">{{forecast}}</span><img src="http://api.openweathermap.org/img/w/{{icon}}.png" alt=""></h4>
+        <h4><span class="badge bg-primary">DESCRIPTION</span> <span class="badge bg-secondary">{{description}}</span></h4>
+        <h4><span class="badge bg-primary">TEMPERATURE</span> <span class="badge bg-secondary">{{temperature}}</span></h4>
+        <h4><span class="badge bg-primary">PRESSURE</span> <span class="badge bg-secondary">{{pressure}}</span></h4>
+        <h4><span class="badge bg-primary">WIND</span> <span class="badge bg-secondary">{{wind}}</span></h4>
+        <h4 ><span class="badge bg-primary">HUMIDITY</span> <span class="badge bg-secondary">{{humidity}}</span> </h4>
+        
+    </div>
+    <div class="container">
+    <button type="button" id='back' class="back btn btn-success">Back to Search</button>
+</div>
+</div>
+   
+    {% endif %}
+
+    
+ {% endblock %} 
+{% block script %}
+
+<script>
+    '{% if alert %}'
+    console.log('im in')
+    sweetAlert(
+                'City not found!',
+                'Provide valid City name!',
+                'error'
+            )
+        document.querySelector('.confirm').addEventListener('click',()=>
+        {
+            window.location.href = '/'
+        })
+    '{% endif %}'
+
+        if ('{{city}}'.length > 0)
+        {
+            document.querySelector('.container1').hidden = true
+        }
+        document.getElementById('back').addEventListener('click',()=>{
+            document.querySelector('.container1').hidden = false
+            document.querySelector('.data').hidden = true
+            document.querySelector('.title').innerHTML = 'Weather'
+        })
+    </script>
+
+{% endblock  %}
+
+  
